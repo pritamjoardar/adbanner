@@ -63,13 +63,16 @@ const config = {
 };
 
 const Home = () => {
-  const [inputdata, setInputData] = useState<string>('make a banner');
+  const [inputdata, setInputData] = useState<string>('');
   const [loader, setLoader] = useState<boolean>(false);
   const [imageData, setImageData] = useState<Banner[]>([]);
   const [childImage, setChildData] = useState<ChildImage[]>([]);
   const indicesToShow = [1, 5, 9, 12,13, 15, 18];
   const indicesToShowOnlyImage = [0, 2, 3,4,6,7,8,10,11,14,16,17];
   const getData = async () => {
+    if(inputdata.length==0){
+      return;
+    }
     setLoader(true);
     await axios.post(url, `{"query":"${inputdata}"}`, config)
       .then(response => {
@@ -77,7 +80,7 @@ const Home = () => {
         setChildData(response.data.images);
       })
       .catch(error => {
-        console.error(error);
+        // console.error(error);
       })
       .finally(() => {
         setLoader(false)
@@ -88,7 +91,7 @@ const Home = () => {
   const exceptBanner = squareBanners.filter((_, index) => indicesToShowOnlyImage.includes(index));
   const filteredBanners = squareBanners.filter((_, index) => indicesToShow.includes(index));
 
-  console.log(childImage);
+  // console.log(childImage);
   return (
     <div className='py-10 flex flex-col items-center gap-5 px-10'>
       <h1 className='text-4xl md:text-5xl opacity-80 font-bold tracking-tighter text-center'>Welcome to <span className='bg-primary-color px-2 text-white'>Banner</span> Maker</h1>
